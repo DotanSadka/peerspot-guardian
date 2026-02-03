@@ -1,0 +1,7 @@
+{
+  "name": "PeerSpot FPS v2 Guardian",
+  "description": "A fraud detection system for review validation using multimodal AI to cross-reference audio recordings with reviewer metadata.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

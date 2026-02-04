@@ -1,20 +1,63 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
 
-# Run and deploy your AI Studio app
+# PeerSpot Guardian (FPS v2)
 
-This contains everything you need to run your app locally.
+**Security Division • v2.4.0**
 
-View your app in AI Studio: https://ai.studio/apps/drive/1XVk0Kj07EcNWHY1N7jc3WyrpVRpkLdXM
+## 🛡️ Project Goal
+PeerSpot Guardian is a high-fidelity **Fraud Prevention System (FPS)** designed to validate user reviews through multimodal AI analysis. It cross-references audio interviews (voice liveness, behavioral patterns) against claimed user profiles (metadata, context files, screenshots) to detect inconsistencies, synthetic voices, and scripted responses.
 
-## Run Locally
+## 🏗️ Architecture
 
-**Prerequisites:**  Node.js
+The system operates on a linear high-performance pipeline:
 
+1.  **Ingestion Layer**:
+    *   Accepts Audio files (Interview recordings).
+    *   Accepts Context data (CSV, Text, or **Screenshots/Images**).
+2.  **Normalization Engine (Gemini Flash)**:
+    *   Converts unstructured raw text or image context into a standardized `User Profile`.
+    *   Parses natural language rule adjustments into structured JSON logic.
+3.  **Core Audit Engine (Gemini Pro)**:
+    *   **Multimodal Analysis**: Processes Audio + Text Profile + System Instructions simultaneously.
+    *   **Rule Execution**: Applies weighted scoring based on the dynamic "Fraud Dictionary".
+    *   **Verdict Generation**: Produces a Risk Score (0-100), Confidence % and specific flags.
+4.  **Persistence Layer**:
+    *   **IndexedDB**: Stores audit logs, rule configurations, and system prompts locally within the browser for data privacy and offline capability.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## ⚡ Tech Stack
+
+*   **Frontend**: React 19, TypeScript
+*   **Styling**: Tailwind CSS
+*   **AI Models**:
+    *   `gemini-3-pro-preview`: For deep reasoning, audio analysis, and final verdict logic.
+    *   `gemini-3-flash-preview`: For rapid text extraction, profile building, and rule parsing.
+*   **SDK**: Google GenAI SDK (`@google/genai`)
+*   **Storage**: Browser Native IndexedDB (Custom wrapper)
+*   **Icons**: FontAwesome 6
+
+## 🚀 Key Features
+
+*   **Multimodal Context**: Drag-and-drop support for analyzing screenshots of user data alongside audio.
+*   **Interactive Tuner**: Modify fraud detection rules using natural language (e.g., "Penalize synthetic voices more heavily") or direct table editing.
+*   **Profile Builder**: Auto-extracts "Job Title", "Company", "Email" from messy raw logs.
+*   **Live Dashboard**: "Architecture" tab visualizes system topology and real-time metrics.
+*   **Review Queue**: Flag suspicious audits for manual follow-up management.
+
+## 📦 Setup
+
+1.  Clone the repository.
+2.  Ensure you have a valid Google Gemini API Key.
+3.  The application expects the API key to be available in `process.env.API_KEY`.
+4.  Run via your preferred development server (e.g., Vite, Parcel).
+
+## 🧩 Model Configuration
+
+The system is hardcoded to use specific models for specific tasks to optimize cost and latency:
+
+| Task | Model | Reason |
+|------|-------|--------|
+| **Fraud Audit** | `gemini-3-pro-preview` | Requires high reasoning for audio/text discrepancies. |
+| **Profile Extraction** | `gemini-3-flash-preview` | Fast token processing for standardizing text/images. |
+| **Rule Parsing** | `gemini-3-flash-preview` | Low latency instruction following. |
+
+---
+*Internal Tool - PeerSpot Security Division*

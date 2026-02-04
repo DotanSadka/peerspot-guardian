@@ -6,7 +6,7 @@
 ## 🛡️ Project Goal
 PeerSpot Guardian is a high-fidelity **Fraud Prevention System (FPS)** designed to validate user reviews through multimodal AI analysis. It cross-references audio interviews (voice liveness, behavioral patterns) against claimed user profiles (metadata, context files, screenshots) to detect inconsistencies, synthetic voices, and scripted responses.
 
-## 🏗️ Architecture
+## 🏗️ System Architecture
 
 The system operates on a linear high-performance pipeline:
 
@@ -33,6 +33,23 @@ The system operates on a linear high-performance pipeline:
 *   **SDK**: Google GenAI SDK (`@google/genai`)
 *   **Storage**: Browser Native IndexedDB (Custom wrapper)
 *   **Icons**: FontAwesome 6
+
+## 📂 Project Structure
+
+The application follows a modular view-based architecture to separate concerns:
+
+*   **`App.tsx`**: Main state controller and view orchestrator.
+*   **`components/views/`**: Dedicated components for each application tab:
+    *   `IngestionView`: Drag-and-drop media handling and profile extraction.
+    *   `TuningView`: Logic matrix and natural language rule calibration.
+    *   `SystemPromptView`: Core system instruction editors.
+    *   `ArchitectureView`: Real-time system topology and metrics.
+    *   `VerdictView` & `AnalysisView`: Results display and loading states.
+    *   `LogsView` & `QueueView`: History and workflow management.
+*   **`services/`**:
+    *   `geminiService.ts`: AI model integration logic.
+    *   `memoryService.ts`: IndexedDB abstraction for persistence.
+*   **`constants.tsx`**: Centralized configuration for AI models, prompts, and default rules.
 
 ## 🚀 Key Features
 

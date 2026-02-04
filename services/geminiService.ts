@@ -1,6 +1,7 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 import { FraudPacket, FraudRule } from "../types";
+import { AI_MODELS } from "../constants";
 
 // Always use named parameter for apiKey and obtain it directly from process.env.API_KEY.
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
@@ -19,7 +20,7 @@ export const extractProfile = async (
   contextData: ContextData | null,
   systemInstruction: string
 ): Promise<string> => {
-  const model = 'gemini-3-flash-preview';
+  const model = AI_MODELS.FAST_TASKS;
   
   const parts: any[] = [];
 
@@ -62,7 +63,7 @@ export const extractProfile = async (
  * Parses raw text into a categorized list of FraudRule objects using AI.
  */
 export const parseRulesFromText = async (rawText: string): Promise<FraudRule[]> => {
-  const model = 'gemini-3-flash-preview';
+  const model = AI_MODELS.FAST_TASKS;
   const prompt = `
     Extract scoring rules from the text and categorize them:
     Group 1: Source / Incentive / Recency (Prefix G1-)
@@ -97,7 +98,7 @@ export const analyzeFraud = async (
   activeRules: FraudRule[],
   systemInstruction: string
 ): Promise<FraudPacket> => {
-  const model = 'gemini-3-pro-preview';
+  const model = AI_MODELS.AUDIT;
   
   const parts: any[] = [
     { inlineData: { data: audioBase64, mimeType: audioMimeType } }
